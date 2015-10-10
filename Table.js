@@ -11,7 +11,7 @@
 function Table(ctx,row,col) {
 	// Public
 	this.name = ctx.getAttribute('name');
-	this.table = document.createElement("table"); // defined below by initialization
+	this.table = document.createElement("table"); // defined below by Initialization
 		this.table.name = "Tablejs-" + this.name;
 	
 	
@@ -109,7 +109,7 @@ function Table(ctx,row,col) {
 		
 		return this.selectCell(digitPart-1,letterPart-1);
 	}
-	this.tabulateData = function() {} // output data in a useful form, ex. CSV
+	//this.tabulateData = function() {} // output data in a useful form, ex. CSV
 	
 	
 	
@@ -150,8 +150,8 @@ function Table(ctx,row,col) {
 	this.getColCount = function() { return _colCount; };
 	this.getSize = function() { return [_rowCount - row, _colCount]; };
 	
-	this.lock = function() {};
-	this.unlock = function() {};
+	//this.lock = function() {};
+	//this.unlock = function() {};
 	
 	
 	
@@ -197,7 +197,7 @@ function Table(ctx,row,col) {
 	
 	// Initialization
 	(function(c,table,self) {
-		table.name = "Tablejs-" + ctx.name;
+		table.name = "Tablejs-" + c.name;
 		table.className = "Tablejs";
 		
 		// header
@@ -217,7 +217,7 @@ function Table(ctx,row,col) {
 			self.addRow();
 		}
 		
-		ctx.appendChild(table);
+		c.appendChild(table);
 		
 		return table;
 	})(ctx,this.table,this)

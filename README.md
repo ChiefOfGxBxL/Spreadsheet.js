@@ -47,7 +47,7 @@ myTable.getSize(); // returns a duple: [row,col]
 Simply __double click__ the cell and type something in
 
 ## Contributing
-Help would be greatly appreciated. Feel free to grab a task below or make your own improvements. Be sure to create your own branch and then make a merge request.
+Help would be greatly appreciated. Feel free to grab a task below or make your own improvements in a pull request.
 (Contributing guidelines / code guidelines will be posted soon)
 
 
