@@ -22,6 +22,7 @@ var container = document.getElementById("container"); // have a div handy to hol
 myTable = new Spreadsheet(container,10,5); // create a table in 'container' with 10 rows, 5 columns
 ```
 By default, cells will be filled in with random values between 0 and 9
+
 ![](https://github.com/ChiefOfGxBxL/Spreadsheet.js/blob/master/screenshots/Spreadsheet_Basic.PNG)
 
 #### Select a cell
@@ -48,6 +49,7 @@ myTable.getSize(); // returns a duple: [row,col]
 #### Edit a cell
 Simply __click__ the cell and type something in.
 Skip to the next cell using your 'Tab' key:
+
 ![](https://github.com/ChiefOfGxBxL/Spreadsheet.js/blob/master/screenshots/Spreadsheet_Tab.png)
 
 ## Contributing
