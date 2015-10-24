@@ -22,7 +22,7 @@ var container = document.getElementById("container"); // have a div handy to hol
 myTable = new Spreadsheet(container,10,5); // create a table in 'container' with 10 rows, 5 columns
 ```
 By default, cells will be filled in with random values between 0 and 9
-![](https://github.com/ChiefOfGxBxL/Spreadsheet.js/blob/master/screenshots/Spreadsheet_Basic.png)
+![](https://github.com/ChiefOfGxBxL/Spreadsheet.js/blob/master/screenshots/Spreadsheet_Basic.PNG)
 
 #### Select a cell
 ```javascript
