@@ -1,4 +1,4 @@
-# Table.js
+# Spreadsheet.js
 _A small javascript library for creating spreadsheet style tables_
 
 
@@ -7,18 +7,19 @@ _A small javascript library for creating spreadsheet style tables_
  * Columns labeled by letters (A,B,...,AA,...ZZ); rows labeled with line numbers
  * Add new columns and rows
  * Easily select cells by spreadsheet-style names (A5, G15, etc.)
+ * Tab through cells to quickly edit them in succession
  * Attach event-handlers to table events (some implemented, others still under development)
 
 
 ## Usage
 #### Creating a table
 ```html
-<link rel='stylesheet' type='text/css' href='Table.css'/>
-<script src='Table.js'></script>
+<link rel='stylesheet' type='text/css' href='Spreadsheet.css'/>
+<script src='Spreadsheet.js'></script>
 ```
 ```javascript
 var container = document.getElementById("container"); // have a div handy to hold the table
-myTable = new Table(container,10,5); // create a table in 'container' with 10 rows, 5 columns
+myTable = new Spreadsheet(container,10,5); // create a table in 'container' with 10 rows, 5 columns
 ```
 By default, cells will be filled in with random values between 0 and 9
 
@@ -47,7 +48,7 @@ myTable.getSize(); // returns a duple: [row,col]
 Simply __double click__ the cell and type something in
 
 ## Contributing
-Help would be greatly appreciated. Feel free to grab a task below or make your own improvements in a pull request.
+Help would be greatly appreciated. Feel free to grab a task below or make your own improvements.
 (Contributing guidelines / code guidelines will be posted soon)
 
 
@@ -58,7 +59,8 @@ Help would be greatly appreciated. Feel free to grab a task below or make your o
  * Drag to resize column sizes
  * Lock and unlock the table (toggle read-only)
  * Copy and paste data
+ * Code refactoring
 
 
 ## License
-Table.js is available under the [MIT License](http://opensource.org/licenses/MIT).
+Spreadsheet.js is available under the [MIT License](http://opensource.org/licenses/MIT).
