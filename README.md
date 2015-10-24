@@ -22,13 +22,14 @@ var container = document.getElementById("container"); // have a div handy to hol
 myTable = new Spreadsheet(container,10,5); // create a table in 'container' with 10 rows, 5 columns
 ```
 By default, cells will be filled in with random values between 0 and 9
+![](https://github.com/ChiefOfGxBxL/Spreadsheet.js/blob/master/screenshots/Spreadsheet_Basic.png)
 
 #### Select a cell
 ```javascript
 myTable.selectCell(0,0); // select the cell in the top-left most corner
 myTable._("G7"); // select the cell in column G, row 7
 ```
-Note that when selecting cells, you may only select "content cells". That is, it is not possible to select the header cells marked by letters or the row numberings. These may be selected with .getRows and .getCols, however:
+Note that when selecting cells, you may only select "content cells". That is, it is not possible to select the header cells marked by letters or the row numberings. These are included with .getRows and .getCols, however:
 
 #### Select all rows / columns
 ```
@@ -45,7 +46,9 @@ myTable.getSize(); // returns a duple: [row,col]
 ```
 
 #### Edit a cell
-Simply __double click__ the cell and type something in
+Simply __click__ the cell and type something in.
+Skip to the next cell using your 'Tab' key:
+![](https://github.com/ChiefOfGxBxL/Spreadsheet.js/blob/master/screenshots/Spreadsheet_Tab.png)
 
 ## Contributing
 Help would be greatly appreciated. Feel free to grab a task below or make your own improvements.
