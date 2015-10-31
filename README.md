@@ -52,13 +52,31 @@ Skip to the next cell using your 'Tab' key:
 
 ![](https://github.com/ChiefOfGxBxL/Spreadsheet.js/blob/master/screenshots/Spreadsheet_Tab.png)
 
+#### Event handlers
+Spreadsheet.js includes event handlers for developers to hook into. Below are the available events:
+```
+// Cell events
+onCellValueChanged(cell,oldValue,newValue)
+onCellClick(cell)
+onCellDblClick(cell)
+onCellFocused(cell)
+
+// Table events
+onNewRow()
+onNewCol()
+
+// USAGE EXAMPLE - Try editing a cell in your table and see the event handler in action!
+myTable.onCellValueChanged = function(cell,old,new) {
+	console.log("A cell value was changed from " + old + " to " + new + "!");
+}
+```
+
 ## Contributing
 Help would be greatly appreciated. Feel free to grab a task below or make your own improvements.
 (Contributing guidelines / code guidelines will be posted soon)
 
 
-## Open tasks..
- * Event handlers
+## Open tasks
  * Options object-literal (that is, myTable.options = {})
  * Delete rows, columns
  * Drag to resize column sizes
