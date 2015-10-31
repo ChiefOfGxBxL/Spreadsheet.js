@@ -1,5 +1,5 @@
 /*!
-	Spreadsheet.js (v0.8)
+	Spreadsheet.js (v0.85)
 	by Greg Lang
 	
 	A simple javascript library to easily create
@@ -9,6 +9,8 @@
 */
 
 function Spreadsheet(ctx,row,col) {
+	const DEBUG = false;
+	
 	// Public
 	this.name = ctx.getAttribute('name');
 	this.table = document.createElement("table"); // defined below by Initialization
@@ -23,24 +25,37 @@ function Spreadsheet(ctx,row,col) {
 	var _alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	var _this = this; // set to this object; allows functions to bypass functional scope and access the Spreadsheet
 	
+	var oldCellValue; // used to track value for event handler onCellValueChanged
+	
 	
 	
 	// Protected functions
 	function tdDblClick(e) {
-		e.target.contentEditable = true;
-		e.target.focus();
+		//e.target.contentEditable = true;
+		//e.target.focus();
+		
+		_this.onCellClick(e.target);
 	}
 	function tdBlur(e) {
 		e.target.contentEditable = false;
 		e.target.className = e.target.className.replace(/cellFocus/,'').trim();
+		
+		// Call off event handler for onCellValueChanged
+		var newCellValue = e.target.textContent;
+		if(newCellValue != oldCellValue) {
+			_this.onCellValueChanged(e.target,oldCellValue,newCellValue); // only called on change
+		}
+		oldCellValue = null;
 	}
 	function tdClick(e) {
 		// remove cellFocus class from all other cells that may have this class
 		_this.unfocusCells();
 		_this.focusCell(e.target);
+		
+		_this.onCellClick(e.target);
 	}
 	function tdKeyPress(e) {
-		console.log(e); // DEBUG
+		if(DEBUG) console.log(e);
 		
 		if(e.key == "Enter" || e.keyCode == 13) {
 			e.preventDefault();
@@ -52,7 +67,7 @@ function Spreadsheet(ctx,row,col) {
 			else if end of line, go to the next line */
 			e.preventDefault();
 			e.target.blur();
-			deselectAllText();
+			_this.unfocusCells();
 			
 			// move on to next cell
 			var colOfTable = e.target.cellIndex;
@@ -179,18 +194,26 @@ function Spreadsheet(ctx,row,col) {
 	}
 	//this.tabulateData = function() {} // output data in a useful form, ex. CSV
 	this.focusCell = function(cellElement) {
+		_this.unfocusCells();
+		
 		cellElement.className += " cellFocus";
 		cellElement.contentEditable = true;
 		cellElement.focus();
 		
 		selectText(cellElement);
+		
+		oldCellValue = cellElement.textContent; // start listening for a change in the cell's content for onCellValueChanged
+		_this.onCellFocused(cellElement);
 	}
 	this.unfocusCells = function() {
-		var cellFocusNodes = (_this.table).querySelectorAll("td.cellFocus"); // grand-parent of <td> is <table>
+		var cellFocusNodes = (_this.table).querySelectorAll("td.cellFocus");
+		if(cellFocusNodes.length == 0) return; // no nodes are selected, so just exit the function
+		
 		for(var i = 0; i < cellFocusNodes.length; i++) {
 			cellFocusNodes[i].className = cellFocusNodes[i].className.replace(/cellFocus/,'').trim();
 		}
 	}
+	
 	
 	
 	// Accessors and Mutators
@@ -302,10 +325,13 @@ function Spreadsheet(ctx,row,col) {
 	
 	
 	// Event-handlers
-	// onCellEdited(cell,newValue,oldValue)
-	// this.onCellClick = function(cell) {};
-	// onCellFocused(cell)
-	// onCellCreated(cell)
-	this.onNewRow = function(){};
-	this.onNewCol = function(){};
+		// Cell events
+	this.onCellValueChanged = function(cell,oldValue,newValue) {};
+	this.onCellClick = function(cell) {};
+	this.onCellDblClick = function(cell) {};
+	this.onCellFocused = function(cell) {};
+	
+		// Table events
+	this.onNewRow = function() {};
+	this.onNewCol = function() {};
 }
