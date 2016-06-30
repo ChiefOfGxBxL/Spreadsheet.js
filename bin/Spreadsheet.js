@@ -8,20 +8,20 @@
     https://github.com/ChiefOfGxBxL/Spreadsheet.js
 */
 
-function Spreadsheet(ctx, row, col) {
+function Spreadsheet(options) {
     const DEBUG = false;
     
     // Public
-    this.name = ctx.getAttribute('name');
+    this.name = options.context.getAttribute('name');
     this.table = document.createElement('table'); // defined below by Initialization
     this.table.name = 'Tablejs-' + this.name;
     
     
     // Private variables
-    var _rowCount = row,
-        _colCount = col,
+    var _rowCount = options.rows,
+        _colCount = options.cols,
         _rowCounter = 0,
-        _alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+        _alphabet = ' ABCDEFGHIJKLMNOPQRSTUVWXYZ',
         _this = this, // set to this object; allows functions to bypass functional scope and access the Spreadsheet
         oldCellValue; // used to track value for event handler onCellValueChanged
     
@@ -65,34 +65,49 @@ function Spreadsheet(ctx, row, col) {
             deselectAllText();
         }
         else if(e.key === 'Tab' || e.keyCode === 9) {
-            /* select the cell to the right of this one
-            else if end of line, go to the next line */
             e.preventDefault();
             e.target.blur();
             _this.unfocusCells();
             
-            // move on to next cell
             var colOfTable = e.target.cellIndex,
                 rowOfTable = e.target.parentElement.rowIndex,
                 rowCount = _this.getRowCount(),
                 colCount = _this.getColCount(),
-                nextCell;
+                prevCell, nextCell;
             
-            /* if we tab from the top-left most content cell,
-            we are at [1, 1], so now move to [1, 2] if possible */
-            if(rowOfTable === rowCount && colOfTable === colCount) {
-                // We are on the last cell, and thus cannot tab to a next cell
-                return;
-            }
-            else {
-                if(colOfTable < colCount) {
-                    // can select cell in next column
-                    nextCell = _this.selectCell(rowOfTable - 1, colOfTable);
-                    _this.focusCell(nextCell);
+            if(e.shiftKey) {
+                // go backward one cell
+                if(rowOfTable === 1 && colOfTable === 1) {
+                    // in top-left of table, cannot move backward any more
+                    return;
                 }
                 else {
-                    // overflow on column, go to next row starting at the 1st column
-                    nextCell = _this.selectCell(rowOfTable, 0);
+                    if(colOfTable > 1) {
+                        prevCell = _this.selectCell(rowOfTable - 1, colOfTable - 2);
+                    }
+                    else {
+                        prevCell = _this.selectCell(rowOfTable - 2, colCount - 1);
+                    }
+                    
+                    _this.focusCell(prevCell);
+                }
+            }
+            else {
+                // go forward one cell
+                if(rowOfTable === rowCount && colOfTable === colCount) {
+                    // We are on the last cell, and thus cannot tab to a next cell
+                    return;
+                }
+                else {
+                    if(colOfTable < colCount) {
+                        // can select cell in next column
+                        nextCell = _this.selectCell(rowOfTable - 1, colOfTable);
+                    }
+                    else {
+                        // overflow on column, go to next row starting at the 1st column
+                        nextCell = _this.selectCell(rowOfTable, 0);
+                    }
+                    
                     _this.focusCell(nextCell);
                 }
             }
@@ -144,7 +159,9 @@ function Spreadsheet(ctx, row, col) {
         
         for(colC = 0; colC < _colCount; colC++) {
             td = document.createElement('td');
-            td.innerHTML = Math.floor(Math.random()*10);
+            if(options.autofill && options.autofill === true) {
+                td.innerHTML = Math.floor(Math.random() * 10);
+            }
             
             // event handlers
             td.ondblclick = tdDblClick;
@@ -155,7 +172,7 @@ function Spreadsheet(ctx, row, col) {
             tr.appendChild(td);
         }
         
-        this.table.appendChild(tr);
+        this.table.tBodies[0].appendChild(tr);
         _rowCount += 1;
         
         return;
@@ -171,12 +188,14 @@ function Spreadsheet(ctx, row, col) {
             i;
         
         newTh.innerHTML = numToLetterBase(++_colCount);
-        this.table.children[0].appendChild(newTh);
+        this.table.tHead.children[0].appendChild(newTh);
         
         // iterate through each row and add a td as necessary
-        for(i = 1; i <= this.getRowCount(); i++) {
+        for(i = 0; i < this.getRowCount(); i++) {
             newTd = document.createElement('td');
-            newTd.innerHTML = Math.floor(Math.random()*10);
+            if(options.autofill && options.autofill === true) {
+                newTd.innerHTML = Math.floor(Math.random() * 10);
+            }
             
             // event handlers
             newTd.ondblclick = tdDblClick;
@@ -184,7 +203,7 @@ function Spreadsheet(ctx, row, col) {
             newTd.onclick = tdClick;
             newTd.onkeypress = tdKeyPress;
             
-            this.table.children[i].appendChild(newTd);
+            this.table.tBodies[0].children[i].appendChild(newTd);
         }
         
         this.onNewCol();
@@ -194,7 +213,7 @@ function Spreadsheet(ctx, row, col) {
     
     this.selectCell = function(row, col) {
         // selectCell(0, 0) -> table.children[1].children[1]
-        return this.table.children[row+1].children[col+1];
+        return this.table.tBodies[0].children[row].children[col+1];
     };
     
     this.cellContent = function(row, col) {
@@ -286,9 +305,9 @@ function Spreadsheet(ctx, row, col) {
         
     };
     
-    this.getRowCount = function() { return _rowCount - row; };
+    this.getRowCount = function() { return _rowCount - options.rows; };
     this.getColCount = function() { return _colCount; };
-    this.getSize = function() { return [_rowCount - row, _colCount]; };
+    this.getSize = function() { return [_rowCount - options.rows, _colCount]; };
     
     // this.lock = function() {};
     // this.unlock = function() {};
@@ -299,18 +318,18 @@ function Spreadsheet(ctx, row, col) {
         if(n > 702) {
             return; // cannot go past ZZ, which is (26)^2 + 26
         }
-        
-        var x = [0, n],
-            alphabet = ' ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-        if(x[1] > 26) {
+        else if(n <= 26) {
+            return _alphabet[n];
+        }
+        else {
+            var x = [0, n];
             while(x[1] > 26) {
                 x[1] -= 26;
                 x[0] += 1;
             }
+          
+            return (_alphabet[x[0]] + _alphabet[x[1]]).trim();
         }
-
-        return (alphabet[x[0]] + alphabet[x[1]]).trim();
     }
     
     function letterBaseToNum(s) {
@@ -318,12 +337,11 @@ function Spreadsheet(ctx, row, col) {
             return;
         }
         
-        var alphabet = ' ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         if(s.trim().length === 1) {
-            return alphabet.indexOf(s.trim());
+            return _alphabet.indexOf(s.trim());
         }
         
-        return alphabet.indexOf(s.substr(0, 1))*26 + alphabet.indexOf(s.substr(1));
+        return _alphabet.indexOf(s.substr(0, 1))*26 + _alphabet.indexOf(s.substr(1));
     }
     
     function parseCellname(c) {
@@ -345,40 +363,43 @@ function Spreadsheet(ctx, row, col) {
         table.className = 'Tablejs';
         
         // header
-        var tr = document.createElement('tr'),
+        var thead = document.createElement('thead'),
+            tbody = document.createElement('tbody'),
+            tr = document.createElement('tr'),
             grayCell = document.createElement('th'),
             th,
             i,
             r;
             
         grayCell.innerHTML = ' ';
+        
         tr.appendChild(grayCell);
-        for(i = 0; i < col; i++) {
+        for(i = 0; i < options.cols; i++) {
             th = document.createElement('th');
-            th.innerHTML = _alphabet[i];
+            th.innerHTML = numToLetterBase(i+1);
             tr.appendChild(th);
         }
-        table.appendChild(tr);
+        thead.appendChild(tr);
         
-        // add rest of rows
-        for(r = 0; r < row; r++) {
+        table.appendChild(thead);
+        table.appendChild(tbody);
+        
+        // add rest of rows; self.addRow will add each new row to the <tbody>
+        for(r = 0; r < options.rows; r++) {
             self.addRow();
         }
         
         c.appendChild(table);
         
         return table;
-    })(ctx, this.table, this);
+    })(options.context, this.table, this);
     
     
     // Event-handlers
-        // Cell events
-    this.onCellValueChanged = function(cell, oldValue, newValue) {};
-    this.onCellClick = function(cell) {};
-    this.onCellDblClick = function(cell) {};
-    this.onCellFocused = function(cell) {};
-    
-        // Table events
-    this.onNewRow = function() {};
-    this.onNewCol = function() {};
+    this.onCellValueChanged = (options.onCellValueChanged) ? options.onCellValueChanged : function() {};
+    this.onCellClick = (options.onCellClick) ? options.onCellClick : function() {};
+    this.onCellDblClick = (options.onCellDblClick) ? options.onCellDblClick : function() {};
+    this.onCellFocused = (options.onCellFocused) ? options.onCellFocused : function() {};
+    this.onNewRow = (options.onNewRow) ? options.onNewRow : function() {};
+    this.onNewCol = (options.onNewCol) ? options.onNewCol : function() {};
 }

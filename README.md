@@ -8,7 +8,7 @@ _A small javascript library for creating spreadsheet style tables_
  * Add new columns and rows
  * Easily select cells by spreadsheet-style names (A5, G15, etc.)
  * Tab through cells to quickly edit them in succession
- * Attach event-handlers to table events (some implemented, others still under development)
+ * Attach event-handlers to table and cell events
 
 
 ## Usage
@@ -19,11 +19,38 @@ _A small javascript library for creating spreadsheet style tables_
 ```
 ```javascript
 var container = document.getElementById("container"); // have a div handy to hold the table
-myTable = new Spreadsheet(container,10,5); // create a table in 'container' with 10 rows, 5 columns
+myTable = new Spreadsheet({
+    rows: 5,
+    cols: 10,
+    context: container,
+    onCellValueChanged: function(cell, old, newv) {
+        console.log(old + '->' + newv);
+    }
+});
 ```
-By default, cells will be filled in with random values between 0 and 9
+By default, cells will not be filled in with any data. If you'd like it to add some random numbers 0-9, set `autofill` to true.
 
 ![](https://github.com/ChiefOfGxBxL/Spreadsheet.js/blob/master/screenshots/Spreadsheet_Basic.PNG)
+
+#### Options
+Below are all of the options that can be specified when creating a spreadsheet, including event-handlers and table information. **Options preceded by an asterisk (*) are required**!
+```
+options: {
+    *rows: <Integer>,
+    *cols: <Integer>,
+    *context: <HTMLElement>,
+    
+    autofill: <Boolean>,
+    
+    // Event-handlers
+    onCellValueChanged: <function(<HTMLElement> cell, <String> oldValue, <String> newValue)>
+    onCellClick: <function(<HTMLElement> cell)>
+    onCellDblClick: <function(<HTMLElement> cell)>
+    onCellFocused: <function(<HTMLElement> cell)>
+    onNewRow: <function()>
+    onNewCol: <function()>
+}
+```
 
 #### Select a cell
 ```javascript
@@ -48,7 +75,7 @@ myTable.getSize(); // returns a duple: [row,col]
 
 #### Edit a cell
 Simply __click__ the cell and type something in.
-Skip to the next cell using your 'Tab' key:
+Skip to the next cell using your 'Tab' key, or 'Shift-Tab' to go back a cell:
 
 ![](https://github.com/ChiefOfGxBxL/Spreadsheet.js/blob/master/screenshots/Spreadsheet_Tab.png)
 
@@ -72,17 +99,9 @@ myTable.onCellValueChanged = function(cell,old,new) {
 ```
 
 ## Contributing
-Help would be greatly appreciated. Feel free to grab a task below or make your own improvements.
-(Contributing guidelines / code guidelines will be posted soon)
+Help would be greatly appreciated. Feel free to grab a task from the issue tracker, or suggest your own improvement!
 
-
-## Open tasks
- * Options object-literal (that is, myTable.options = {})
- * Delete rows, columns
- * Drag to resize column sizes
- * Lock and unlock the table (toggle read-only)
- * Copy and paste data
- * Code refactoring
+Create a fork of this repository, claim some issues and work on them, and then submit a merge request!
 
 
 ## License
