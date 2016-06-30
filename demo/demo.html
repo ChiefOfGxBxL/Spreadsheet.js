@@ -5,14 +5,21 @@
 	<script src='../bin/Spreadsheet.js'></script>
 	<script>
 		window.onload = function() {
-			var container = document.getElementById("container");
-			myTable = new Spreadsheet(container, 15, 30);
+			var container = document.getElementById("container"),
+                container2 = document.getElementById("container2"),
+                container3 = document.getElementById("container3");
+            
+			myTable = new Spreadsheet({
+                rows: 15,
+                cols: 30,
+                context: container,
+                onCellValueChanged: function(cell, old, newv) {
+                    console.log(old + '->' + newv);
+                }
+            });
 			
-			var container2 = document.getElementById("container2");
-			myTable2 = new Spreadsheet(container2, 2, 3);
-			
-			var container3 = document.getElementById("container3");
-			myTable3 = new Spreadsheet(container3, 0, 0);
+			myTable2 = new Spreadsheet({rows: 2, cols: 3, context: container2});
+			myTable3 = new Spreadsheet({rows: 0, cols: 0, context: container3});
 		}
 	</script>
 </head>

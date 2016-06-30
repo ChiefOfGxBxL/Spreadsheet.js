@@ -8,18 +8,18 @@
     https://github.com/ChiefOfGxBxL/Spreadsheet.js
 */
 
-function Spreadsheet(ctx, row, col) {
+function Spreadsheet(options) {
     const DEBUG = false;
     
     // Public
-    this.name = ctx.getAttribute('name');
+    this.name = options.context.getAttribute('name');
     this.table = document.createElement('table'); // defined below by Initialization
     this.table.name = 'Tablejs-' + this.name;
     
     
     // Private variables
-    var _rowCount = row,
-        _colCount = col,
+    var _rowCount = options.rows,
+        _colCount = options.cols,
         _rowCounter = 0,
         _alphabet = ' ABCDEFGHIJKLMNOPQRSTUVWXYZ',
         _this = this, // set to this object; allows functions to bypass functional scope and access the Spreadsheet
@@ -301,9 +301,9 @@ function Spreadsheet(ctx, row, col) {
         
     };
     
-    this.getRowCount = function() { return _rowCount - row; };
+    this.getRowCount = function() { return _rowCount - options.rows; };
     this.getColCount = function() { return _colCount; };
-    this.getSize = function() { return [_rowCount - row, _colCount]; };
+    this.getSize = function() { return [_rowCount - options.rows, _colCount]; };
     
     // this.lock = function() {};
     // this.unlock = function() {};
@@ -370,7 +370,7 @@ function Spreadsheet(ctx, row, col) {
         grayCell.innerHTML = ' ';
         
         tr.appendChild(grayCell);
-        for(i = 0; i < col; i++) {
+        for(i = 0; i < options.cols; i++) {
             th = document.createElement('th');
             th.innerHTML = numToLetterBase(i+1);
             tr.appendChild(th);
@@ -381,24 +381,21 @@ function Spreadsheet(ctx, row, col) {
         table.appendChild(tbody);
         
         // add rest of rows; self.addRow will add each new row to the <tbody>
-        for(r = 0; r < row; r++) {
+        for(r = 0; r < options.rows; r++) {
             self.addRow();
         }
         
         c.appendChild(table);
         
         return table;
-    })(ctx, this.table, this);
+    })(options.context, this.table, this);
     
     
     // Event-handlers
-        // Cell events
-    this.onCellValueChanged = function(cell, oldValue, newValue) {};
-    this.onCellClick = function(cell) {};
-    this.onCellDblClick = function(cell) {};
-    this.onCellFocused = function(cell) {};
-    
-        // Table events
-    this.onNewRow = function() {};
-    this.onNewCol = function() {};
+    this.onCellValueChanged = (options.onCellValueChanged) ? options.onCellValueChanged : function() {};
+    this.onCellClick = (options.onCellClick) ? options.onCellClick : function() {};
+    this.onCellDblClick = (options.onCellDblClick) ? options.onCellDblClick : function() {};
+    this.onCellFocused = (options.onCellFocused) ? options.onCellFocused : function() {};
+    this.onNewRow = (options.onNewRow) ? options.onNewRow : function() {};
+    this.onNewCol = (options.onNewCol) ? options.onNewCol : function() {};
 }

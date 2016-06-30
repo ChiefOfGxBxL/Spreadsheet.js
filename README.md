@@ -19,11 +19,38 @@ _A small javascript library for creating spreadsheet style tables_
 ```
 ```javascript
 var container = document.getElementById("container"); // have a div handy to hold the table
-myTable = new Spreadsheet(container,10,5); // create a table in 'container' with 10 rows, 5 columns
+myTable = new Spreadsheet({
+    rows: 5,
+    cols: 10,
+    context: container,
+    onCellValueChanged: function(cell, old, newv) {
+        console.log(old + '->' + newv);
+    }
+});
 ```
-By default, cells will be filled in with random values between 0 and 9
+By default, cells will not be filled in with any data. If you'd like it to add some random numbers 0-9, set `autofill` to true.
 
 ![](https://github.com/ChiefOfGxBxL/Spreadsheet.js/blob/master/screenshots/Spreadsheet_Basic.PNG)
+
+#### Options
+Below are all of the options that can be specified when creating a spreadsheet, including event-handlers and table information. **Options preceded by an asterisk (*) are required**!
+```
+options: {
+    *rows: <Integer>,
+    *cols: <Integer>,
+    *context: <HTMLElement>,
+    
+    autofill: false,
+    
+    // Event-handlers
+    onCellValueChanged: <function(<HTMLElement> cell, <String> oldValue, <String> newValue)>
+    onCellClick: <function(<HTMLElement> cell)>
+    onCellDblClick: <function(<HTMLElement> cell)>
+    onCellFocused: <function(<HTMLElement> cell)>
+    onNewRow: <function()>
+    onNewCol: <function()>
+}
+```
 
 #### Select a cell
 ```javascript
