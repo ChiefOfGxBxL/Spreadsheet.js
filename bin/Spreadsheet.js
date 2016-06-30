@@ -20,16 +20,13 @@ function Spreadsheet(options) {
         _colCount = options.cols,
         _rowCounter = 0,
         _alphabet = ' ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-        _this = this, // set to this object; allows functions to bypass functional scope and access the Spreadsheet
+        self = this, // set to this object; allows functions to bypass functional scope and access the Spreadsheet
         oldCellValue; // used to track value for event handler onCellValueChanged
     
     
     // Private functions
     function tdDblClick(e) {
-        // e.target.contentEditable = true;
-        // e.target.focus();
-        
-        _this.onCellClick(e.target);
+        self.onCellDblClick(e.target);
     }
     
     function tdBlur(e) {
@@ -39,21 +36,20 @@ function Spreadsheet(options) {
         // Call off event handler for onCellValueChanged
         var newCellValue = e.target.textContent;
         if(newCellValue !== oldCellValue) {
-            _this.onCellValueChanged(e.target, oldCellValue, newCellValue); // only called on change
+            self.onCellValueChanged(e.target, oldCellValue, newCellValue); // only called on change
         }
         oldCellValue = null;
     }
     
     function tdClick(e) {
         // remove cellFocus class from all other cells that may have this class
-        _this.unfocusCells();
-        _this.focusCell(e.target);
+        self.unfocusCells();
+        self.focusCell(e.target);
         
-        _this.onCellClick(e.target);
+        self.onCellClick(e.target);
     }
     
     function tdKeyPress(e) {
-        
         if(e.key === 'Enter' || e.keyCode === 13) {
             e.preventDefault();
             e.target.blur();
@@ -62,12 +58,12 @@ function Spreadsheet(options) {
         else if(e.key === 'Tab' || e.keyCode === 9) {
             e.preventDefault();
             e.target.blur();
-            _this.unfocusCells();
+            self.unfocusCells();
             
             var colOfTable = e.target.cellIndex,
                 rowOfTable = e.target.parentElement.rowIndex,
-                rowCount = _this.getRowCount(),
-                colCount = _this.getColCount(),
+                rowCount = self.getRowCount(),
+                colCount = self.getColCount(),
                 prevCell, nextCell;
             
             if(e.shiftKey) {
@@ -78,13 +74,13 @@ function Spreadsheet(options) {
                 }
                 else {
                     if(colOfTable > 1) {
-                        prevCell = _this.selectCell(rowOfTable - 1, colOfTable - 2);
+                        prevCell = self.selectCell(rowOfTable - 1, colOfTable - 2);
                     }
                     else {
-                        prevCell = _this.selectCell(rowOfTable - 2, colCount - 1);
+                        prevCell = self.selectCell(rowOfTable - 2, colCount - 1);
                     }
                     
-                    _this.focusCell(prevCell);
+                    self.focusCell(prevCell);
                 }
             }
             else {
@@ -96,14 +92,14 @@ function Spreadsheet(options) {
                 else {
                     if(colOfTable < colCount) {
                         // can select cell in next column
-                        nextCell = _this.selectCell(rowOfTable - 1, colOfTable);
+                        nextCell = self.selectCell(rowOfTable - 1, colOfTable);
                     }
                     else {
                         // overflow on column, go to next row starting at the 1st column
-                        nextCell = _this.selectCell(rowOfTable, 0);
+                        nextCell = self.selectCell(rowOfTable, 0);
                     }
                     
-                    _this.focusCell(nextCell);
+                    self.focusCell(nextCell);
                 }
             }
         }
@@ -234,7 +230,7 @@ function Spreadsheet(options) {
     // this.tabulateData = function() {} // output data in a useful form, ex. CSV
     
     this.focusCell = function(cellElement) {
-        _this.unfocusCells();
+        self.unfocusCells();
         
         cellElement.className += ' cellFocus';
         cellElement.contentEditable = true;
@@ -243,11 +239,11 @@ function Spreadsheet(options) {
         selectText(cellElement);
         
         oldCellValue = cellElement.textContent; // start listening for a change in the cell's content for onCellValueChanged
-        _this.onCellFocused(cellElement);
+        self.onCellFocused(cellElement);
     };
     
     this.unfocusCells = function() {
-        var cellFocusNodes = (_this.table).querySelectorAll('td.cellFocus'),
+        var cellFocusNodes = (self.table).querySelectorAll('td.cellFocus'),
             i;
         
         if(cellFocusNodes.length === 0) {
