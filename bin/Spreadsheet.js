@@ -12,7 +12,7 @@ function Spreadsheet(options) {
     // Public
     this.name = options.context.getAttribute('name');
     this.table = document.createElement('table'); // defined below by Initialization
-    this.table.name = 'Tablejs-' + this.name;
+    this.table.name = 'SpreadsheetJs-' + this.name;
     
     
     // Private variables
@@ -144,7 +144,7 @@ function Spreadsheet(options) {
             colC,
             td;
         
-        tdRowCount.className = 'Tablejs-gray';
+        tdRowCount.className = 'SpreadsheetJs-gray';
         tdRowCount.innerHTML = ++_rowCounter;
         tr.appendChild(tdRowCount);
         
@@ -350,8 +350,8 @@ function Spreadsheet(options) {
     
     // Initialization
     (function(c, table, self) {
-        table.name = 'Tablejs-' + c.name;
-        table.className = 'Tablejs';
+        table.name = 'SpreadsheetJs-' + c.name;
+        table.className = 'SpreadsheetJs';
         
         // header
         var thead = document.createElement('thead'),
