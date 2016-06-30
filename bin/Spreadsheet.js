@@ -300,8 +300,7 @@ function Spreadsheet(ctx, row, col) {
             return; // cannot go past ZZ, which is (26)^2 + 26
         }
         
-        var x = [0, n],
-            alphabet = ' ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        var x = [0, n];
 
         if(x[1] > 26) {
             while(x[1] > 26) {
@@ -310,7 +309,7 @@ function Spreadsheet(ctx, row, col) {
             }
         }
 
-        return (alphabet[x[0]] + alphabet[x[1]]).trim();
+        return (_alphabet[x[0]] + _alphabet[x[1]]).trim();
     }
     
     function letterBaseToNum(s) {
@@ -318,12 +317,11 @@ function Spreadsheet(ctx, row, col) {
             return;
         }
         
-        var alphabet = ' ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         if(s.trim().length === 1) {
-            return alphabet.indexOf(s.trim());
+            return _alphabet.indexOf(s.trim());
         }
         
-        return alphabet.indexOf(s.substr(0, 1))*26 + alphabet.indexOf(s.substr(1));
+        return _alphabet.indexOf(s.substr(0, 1))*26 + _alphabet.indexOf(s.substr(1));
     }
     
     function parseCellname(c) {
