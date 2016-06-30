@@ -171,10 +171,10 @@ function Spreadsheet(ctx, row, col) {
             i;
         
         newTh.innerHTML = numToLetterBase(++_colCount);
-        this.table.children[0].appendChild(newTh);
+        this.table.tHead.children[0].appendChild(newTh);
         
         // iterate through each row and add a td as necessary
-        for(i = 1; i <= this.getRowCount(); i++) {
+        for(i = 0; i < this.getRowCount(); i++) {
             newTd = document.createElement('td');
             newTd.innerHTML = Math.floor(Math.random()*10);
             
@@ -184,7 +184,7 @@ function Spreadsheet(ctx, row, col) {
             newTd.onclick = tdClick;
             newTd.onkeypress = tdKeyPress;
             
-            this.table.children[i].appendChild(newTd);
+            this.table.tBodies[0].children[i].appendChild(newTd);
         }
         
         this.onNewCol();
@@ -194,7 +194,7 @@ function Spreadsheet(ctx, row, col) {
     
     this.selectCell = function(row, col) {
         // selectCell(0, 0) -> table.children[1].children[1]
-        return this.table.children[row+1].children[col+1];
+        return this.table.tBodies[0].children[row].children[col+1];
     };
     
     this.cellContent = function(row, col) {
