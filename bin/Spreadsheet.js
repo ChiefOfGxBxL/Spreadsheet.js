@@ -9,8 +9,6 @@
 */
 
 function Spreadsheet(options) {
-    const DEBUG = false;
-    
     // Public
     this.name = options.context.getAttribute('name');
     this.table = document.createElement('table'); // defined below by Initialization
@@ -55,9 +53,6 @@ function Spreadsheet(options) {
     }
     
     function tdKeyPress(e) {
-        if(DEBUG) {
-            console.log(e);
-        }
         
         if(e.key === 'Enter' || e.keyCode === 13) {
             e.preventDefault();
