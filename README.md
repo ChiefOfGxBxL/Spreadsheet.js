@@ -34,7 +34,7 @@ By default, cells will not be filled in with any data. If you'd like it to add s
 
 #### Options
 Below are all of the options that can be specified when creating a spreadsheet, including event-handlers and table information. **Options preceded by an asterisk (*) are required**!
-```
+```javascript
 options: {
     *rows: <Integer>,
     *cols: <Integer>,
@@ -43,11 +43,11 @@ options: {
     autofill: <Boolean>,
     
     // Event-handlers
-    onCellValueChanged: <function(<HTMLElement> cell, <String> oldValue, <String> newValue)>
-    onCellClick: <function(<HTMLElement> cell)>
-    onCellDblClick: <function(<HTMLElement> cell)>
-    onCellFocused: <function(<HTMLElement> cell)>
-    onNewRow: <function()>
+    onCellValueChanged: <function(<HTMLElement> cell, <String> oldValue, <String> newValue)>,
+    onCellClick: <function(<HTMLElement> cell)>,
+    onCellDblClick: <function(<HTMLElement> cell)>,
+    onCellFocused: <function(<HTMLElement> cell)>,
+    onNewRow: <function()>,
     onNewCol: <function()>
 }
 ```
@@ -60,7 +60,7 @@ myTable._("G7"); // select the cell in column G, row 7
 Note that when selecting cells, you may only select "content cells". That is, it is not possible to select the header cells marked by letters or the row numberings. These are included with .getRows and .getCols, however:
 
 #### Select all rows / columns
-```
+```javascript
 myTable.getRows();
 myTable.getCols();
 ```
@@ -78,25 +78,6 @@ Simply __click__ the cell and type something in.
 Skip to the next cell using your 'Tab' key, or 'Shift-Tab' to go back a cell:
 
 ![](https://github.com/ChiefOfGxBxL/Spreadsheet.js/blob/master/screenshots/Spreadsheet_Tab.png)
-
-#### Event handlers
-Spreadsheet.js includes event handlers for developers to hook into. Below are the available events:
-```
-// Cell events
-onCellValueChanged(cell,oldValue,newValue)
-onCellClick(cell)
-onCellDblClick(cell)
-onCellFocused(cell)
-
-// Table events
-onNewRow()
-onNewCol()
-
-// USAGE EXAMPLE - Try editing a cell in your table and see the event handler in action!
-myTable.onCellValueChanged = function(cell,old,new) {
-	console.log("A cell value was changed from " + old + " to " + new + "!");
-}
-```
 
 ## Contributing
 Help would be greatly appreciated. Feel free to grab a task from the issue tracker, or suggest your own improvement!
