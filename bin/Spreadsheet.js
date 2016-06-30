@@ -9,29 +9,33 @@
 */
 
 function Spreadsheet(options) {
-    const DEBUG = false;
-    
     // Public
     this.name = options.context.getAttribute('name');
     this.table = document.createElement('table'); // defined below by Initialization
-    this.table.name = 'Tablejs-' + this.name;
+    this.table.name = 'SpreadsheetJs-' + this.name;
+    
+    
+    // Event-handlers
+    this.onCellValueChanged = (options.onCellValueChanged) ? options.onCellValueChanged : function() {};
+    this.onCellClick = (options.onCellClick) ? options.onCellClick : function() {};
+    this.onCellDblClick = (options.onCellDblClick) ? options.onCellDblClick : function() {};
+    this.onCellFocused = (options.onCellFocused) ? options.onCellFocused : function() {};
+    this.onNewRow = (options.onNewRow) ? options.onNewRow : function() {};
+    this.onNewCol = (options.onNewCol) ? options.onNewCol : function() {};
     
     
     // Private variables
     var _rowCount = options.rows,
         _colCount = options.cols,
-        _rowCounter = 0,
+        _rowCounter = 0, // for labeling the rows with their row number
         _alphabet = ' ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-        _this = this, // set to this object; allows functions to bypass functional scope and access the Spreadsheet
+        self = this, // set to this object; allows functions to bypass functional scope and access the Spreadsheet
         oldCellValue; // used to track value for event handler onCellValueChanged
     
     
     // Private functions
     function tdDblClick(e) {
-        // e.target.contentEditable = true;
-        // e.target.focus();
-        
-        _this.onCellClick(e.target);
+        self.onCellDblClick(e.target);
     }
     
     function tdBlur(e) {
@@ -41,24 +45,20 @@ function Spreadsheet(options) {
         // Call off event handler for onCellValueChanged
         var newCellValue = e.target.textContent;
         if(newCellValue !== oldCellValue) {
-            _this.onCellValueChanged(e.target, oldCellValue, newCellValue); // only called on change
+            self.onCellValueChanged(e.target, oldCellValue, newCellValue); // only called on change
         }
         oldCellValue = null;
     }
     
     function tdClick(e) {
         // remove cellFocus class from all other cells that may have this class
-        _this.unfocusCells();
-        _this.focusCell(e.target);
+        self.unfocusCells();
+        self.focusCell(e.target);
         
-        _this.onCellClick(e.target);
+        self.onCellClick(e.target);
     }
     
     function tdKeyPress(e) {
-        if(DEBUG) {
-            console.log(e);
-        }
-        
         if(e.key === 'Enter' || e.keyCode === 13) {
             e.preventDefault();
             e.target.blur();
@@ -67,12 +67,12 @@ function Spreadsheet(options) {
         else if(e.key === 'Tab' || e.keyCode === 9) {
             e.preventDefault();
             e.target.blur();
-            _this.unfocusCells();
+            self.unfocusCells();
             
             var colOfTable = e.target.cellIndex,
                 rowOfTable = e.target.parentElement.rowIndex,
-                rowCount = _this.getRowCount(),
-                colCount = _this.getColCount(),
+                rowCount = self.getRowCount(),
+                colCount = self.getColCount(),
                 prevCell, nextCell;
             
             if(e.shiftKey) {
@@ -83,13 +83,13 @@ function Spreadsheet(options) {
                 }
                 else {
                     if(colOfTable > 1) {
-                        prevCell = _this.selectCell(rowOfTable - 1, colOfTable - 2);
+                        prevCell = self.selectCell(rowOfTable - 1, colOfTable - 2);
                     }
                     else {
-                        prevCell = _this.selectCell(rowOfTable - 2, colCount - 1);
+                        prevCell = self.selectCell(rowOfTable - 2, colCount - 1);
                     }
                     
-                    _this.focusCell(prevCell);
+                    self.focusCell(prevCell);
                 }
             }
             else {
@@ -101,14 +101,14 @@ function Spreadsheet(options) {
                 else {
                     if(colOfTable < colCount) {
                         // can select cell in next column
-                        nextCell = _this.selectCell(rowOfTable - 1, colOfTable);
+                        nextCell = self.selectCell(rowOfTable - 1, colOfTable);
                     }
                     else {
                         // overflow on column, go to next row starting at the 1st column
-                        nextCell = _this.selectCell(rowOfTable, 0);
+                        nextCell = self.selectCell(rowOfTable, 0);
                     }
                     
-                    _this.focusCell(nextCell);
+                    self.focusCell(nextCell);
                 }
             }
         }
@@ -153,7 +153,7 @@ function Spreadsheet(options) {
             colC,
             td;
         
-        tdRowCount.className = 'Tablejs-gray';
+        tdRowCount.className = 'SpreadsheetJs-gray';
         tdRowCount.innerHTML = ++_rowCounter;
         tr.appendChild(tdRowCount);
         
@@ -175,7 +175,7 @@ function Spreadsheet(options) {
         this.table.tBodies[0].appendChild(tr);
         _rowCount += 1;
         
-        return;
+        this.onNewRow();
     };
     
     this.addCol = function() {
@@ -187,7 +187,7 @@ function Spreadsheet(options) {
             newTd,
             i;
         
-        newTh.innerHTML = numToLetterBase(++_colCount);
+        newTh.innerHTML = numToLetterBase(_colCount + 1);
         this.table.tHead.children[0].appendChild(newTh);
         
         // iterate through each row and add a td as necessary
@@ -206,9 +206,9 @@ function Spreadsheet(options) {
             this.table.tBodies[0].children[i].appendChild(newTd);
         }
         
-        this.onNewCol();
-        return;
+        _colCount += 1;
         
+        this.onNewCol();
     };
     
     this.selectCell = function(row, col) {
@@ -239,20 +239,20 @@ function Spreadsheet(options) {
     // this.tabulateData = function() {} // output data in a useful form, ex. CSV
     
     this.focusCell = function(cellElement) {
-        _this.unfocusCells();
+        self.unfocusCells();
         
-        cellElement.className += ' cellFocus';
+        cellElement.classList.add('cellFocus');
         cellElement.contentEditable = true;
         cellElement.focus();
         
         selectText(cellElement);
         
         oldCellValue = cellElement.textContent; // start listening for a change in the cell's content for onCellValueChanged
-        _this.onCellFocused(cellElement);
+        self.onCellFocused(cellElement);
     };
     
     this.unfocusCells = function() {
-        var cellFocusNodes = (_this.table).querySelectorAll('td.cellFocus'),
+        var cellFocusNodes = (self.table).querySelectorAll('td.cellFocus'),
             i;
         
         if(cellFocusNodes.length === 0) {
@@ -260,7 +260,7 @@ function Spreadsheet(options) {
         }
         
         for(i = 0; i < cellFocusNodes.length; i++) {
-            cellFocusNodes[i].className = cellFocusNodes[i].className.replace(/cellFocus/, '').trim();
+            cellFocusNodes[i].classList.remove('cellFocus');
         }
     };
     
@@ -359,8 +359,8 @@ function Spreadsheet(options) {
     
     // Initialization
     (function(c, table, self) {
-        table.name = 'Tablejs-' + c.name;
-        table.className = 'Tablejs';
+        table.name = 'SpreadsheetJs-' + c.name;
+        table.className = 'SpreadsheetJs';
         
         // header
         var thead = document.createElement('thead'),
@@ -390,16 +390,5 @@ function Spreadsheet(options) {
         }
         
         c.appendChild(table);
-        
-        return table;
     })(options.context, this.table, this);
-    
-    
-    // Event-handlers
-    this.onCellValueChanged = (options.onCellValueChanged) ? options.onCellValueChanged : function() {};
-    this.onCellClick = (options.onCellClick) ? options.onCellClick : function() {};
-    this.onCellDblClick = (options.onCellDblClick) ? options.onCellDblClick : function() {};
-    this.onCellFocused = (options.onCellFocused) ? options.onCellFocused : function() {};
-    this.onNewRow = (options.onNewRow) ? options.onNewRow : function() {};
-    this.onNewCol = (options.onNewCol) ? options.onNewCol : function() {};
 }

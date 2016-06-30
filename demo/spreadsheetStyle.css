@@ -1,14 +1,14 @@
-.Tablejs {
+.SpreadsheetJs {
 	border:1px SOLID #DDD;
 	border-spacing:0;
 	border-collapse: collapse;
 }
 
-.Tablejs-gray {background-color:#EEE;text-align:center !important;font-size:0.8em;border-bottom:1px SOLID #DDD;}
+.SpreadsheetJs-gray {background-color:#EEE;text-align:center !important;font-size:0.8em;border-bottom:1px SOLID #DDD;}
 
-.Tablejs tr {}
-.Tablejs td:first-child{border:1px SOLID #DDD;} /* Selects the row counter column */
-.Tablejs th {
+.SpreadsheetJs tr {}
+.SpreadsheetJs td:first-child{border:1px SOLID #DDD;} /* Selects the row counter column */
+.SpreadsheetJs th {
 	background-color:#EEE;
 	border-bottom:1px SOLID #DDD;
 	border-right:1px SOLID #DDD;
@@ -16,18 +16,18 @@
 	font-size:0.9em;
 	font-weight:normal;
 }
-.Tablejs td {
+.SpreadsheetJs td {
 	border:1px SOLID #EEE;
 	text-align:right;
 	padding:2px;
 	cursor:default;
 }
 
-.Tablejs .cellFocus {
+.SpreadsheetJs .cellFocus {
 	border:2px SOLID #41A1F0;
 	padding:1px 2px;
 }
-.Tablejs td[contentEditable="true"] {
+.SpreadsheetJs td[contentEditable="true"] {
 	border:2px SOLID #1D76BF;
 	cursor:text;
 }
