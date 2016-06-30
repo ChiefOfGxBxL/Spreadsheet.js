@@ -15,6 +15,15 @@ function Spreadsheet(options) {
     this.table.name = 'SpreadsheetJs-' + this.name;
     
     
+    // Event-handlers
+    this.onCellValueChanged = (options.onCellValueChanged) ? options.onCellValueChanged : function() {};
+    this.onCellClick = (options.onCellClick) ? options.onCellClick : function() {};
+    this.onCellDblClick = (options.onCellDblClick) ? options.onCellDblClick : function() {};
+    this.onCellFocused = (options.onCellFocused) ? options.onCellFocused : function() {};
+    this.onNewRow = (options.onNewRow) ? options.onNewRow : function() {};
+    this.onNewCol = (options.onNewCol) ? options.onNewCol : function() {};
+    
+    
     // Private variables
     var _rowCount = options.rows,
         _colCount = options.cols,
@@ -166,7 +175,7 @@ function Spreadsheet(options) {
         this.table.tBodies[0].appendChild(tr);
         _rowCount += 1;
         
-        return;
+        this.onNewRow();
     };
     
     this.addCol = function() {
@@ -178,7 +187,7 @@ function Spreadsheet(options) {
             newTd,
             i;
         
-        newTh.innerHTML = numToLetterBase(++_colCount);
+        newTh.innerHTML = numToLetterBase(_colCount + 1);
         this.table.tHead.children[0].appendChild(newTh);
         
         // iterate through each row and add a td as necessary
@@ -197,9 +206,9 @@ function Spreadsheet(options) {
             this.table.tBodies[0].children[i].appendChild(newTd);
         }
         
-        this.onNewCol();
-        return;
+        _colCount += 1;
         
+        this.onNewCol();
     };
     
     this.selectCell = function(row, col) {
@@ -381,16 +390,5 @@ function Spreadsheet(options) {
         }
         
         c.appendChild(table);
-        
-        return table;
     })(options.context, this.table, this);
-    
-    
-    // Event-handlers
-    this.onCellValueChanged = (options.onCellValueChanged) ? options.onCellValueChanged : function() {};
-    this.onCellClick = (options.onCellClick) ? options.onCellClick : function() {};
-    this.onCellDblClick = (options.onCellDblClick) ? options.onCellDblClick : function() {};
-    this.onCellFocused = (options.onCellFocused) ? options.onCellFocused : function() {};
-    this.onNewRow = (options.onNewRow) ? options.onNewRow : function() {};
-    this.onNewCol = (options.onNewCol) ? options.onNewCol : function() {};
 }
