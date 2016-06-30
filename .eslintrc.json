@@ -1,0 +1,43 @@
+{
+    "rules": {
+        "eqeqeq": 2,
+        "curly": 2,
+        "semi": 2,
+        "strict": [2, "never"],
+        "brace-style": [2, "stroustrup", {"allowSingleLine": true}],
+        "quotes": [2, "single", "avoid-escape"],
+        "no-trailing-spaces": [2, {"skipBlankLines": true}],
+        "camelcase": [2, {"properties": "always"}],
+        "comma-spacing": [2, {"before": false, "after": true}],
+        "eol-last": 2,
+        "handle-callback-err": 0,
+        "no-use-before-define": [2, "nofunc"],
+        "no-unused-vars": [2, {"vars": "all", "args": "none"}],
+        "no-multiple-empty-lines": [2, {"max": 2}],
+        "no-console": 0,
+        "no-mixed-requires": 0,
+        "one-var": [2, "always"],
+        "dot-notation": 0,
+        "no-shadow": 0,
+        "no-empty": 2,
+        "block-scoped-var": 2,
+        "default-case": 2,
+        "no-multi-spaces": 2,
+        "no-redeclare": 2,
+        "no-unused-expressions": 2,
+        "no-useless-concat": 2,
+        "array-bracket-spacing": [2, "never"],
+        "block-spacing": 2,
+        "indent": [2, 4, {"SwitchCase": 1}],
+        "object-curly-spacing": [2, "never"],
+        "require-jsdoc": [2, {"require": {"FunctionDeclaration": false, "MethodDefinition": true, "ClassDeclaration": true}}],
+        "semi-spacing": [2, {"before": false, "after": true}],
+        "space-in-parens": [2, "never"],
+        "spaced-comment": [2, "always"]
+    },
+    "env": {
+        "es6": true,
+        "browser": true
+    },
+    "extends": "eslint:recommended"
+}
