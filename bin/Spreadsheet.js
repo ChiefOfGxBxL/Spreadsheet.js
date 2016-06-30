@@ -155,7 +155,7 @@ function Spreadsheet(ctx, row, col) {
             tr.appendChild(td);
         }
         
-        this.table.appendChild(tr);
+        this.table.tBodies[0].appendChild(tr);
         _rowCount += 1;
         
         return;
@@ -345,22 +345,28 @@ function Spreadsheet(ctx, row, col) {
         table.className = 'Tablejs';
         
         // header
-        var tr = document.createElement('tr'),
+        var thead = document.createElement('thead'),
+            tbody = document.createElement('tbody'),
+            tr = document.createElement('tr'),
             grayCell = document.createElement('th'),
             th,
             i,
             r;
             
         grayCell.innerHTML = ' ';
+        
         tr.appendChild(grayCell);
         for(i = 0; i < col; i++) {
             th = document.createElement('th');
             th.innerHTML = _alphabet[i];
             tr.appendChild(th);
         }
-        table.appendChild(tr);
+        thead.appendChild(tr);
         
-        // add rest of rows
+        table.appendChild(thead);
+        table.appendChild(tbody);
+        
+        // add rest of rows; self.addRow will add each new row to the <tbody>
         for(r = 0; r < row; r++) {
             self.addRow();
         }
