@@ -309,7 +309,7 @@ function Spreadsheet(ctx, row, col) {
                 x[0] += 1;
             }
           
-           return (_alphabet[x[0]] + _alphabet[x[1]]).trim();
+            return (_alphabet[x[0]] + _alphabet[x[1]]).trim();
         }
     }
     
