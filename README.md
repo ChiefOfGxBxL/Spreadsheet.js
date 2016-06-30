@@ -40,7 +40,7 @@ options: {
     *cols: <Integer>,
     *context: <HTMLElement>,
     
-    autofill: false,
+    autofill: <Boolean>,
     
     // Event-handlers
     onCellValueChanged: <function(<HTMLElement> cell, <String> oldValue, <String> newValue)>

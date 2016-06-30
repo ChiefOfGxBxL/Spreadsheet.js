@@ -15,7 +15,8 @@
                 context: container,
                 onCellValueChanged: function(cell, old, newv) {
                     console.log(old + '->' + newv);
-                }
+                },
+                autofill: true
             });
 			
 			myTable2 = new Spreadsheet({rows: 2, cols: 3, context: container2});

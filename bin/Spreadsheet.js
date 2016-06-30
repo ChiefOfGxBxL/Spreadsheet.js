@@ -159,7 +159,9 @@ function Spreadsheet(options) {
         
         for(colC = 0; colC < _colCount; colC++) {
             td = document.createElement('td');
-            td.innerHTML = Math.floor(Math.random()*10);
+            if(options.autofill && options.autofill === true) {
+                td.innerHTML = Math.floor(Math.random() * 10);
+            }
             
             // event handlers
             td.ondblclick = tdDblClick;
@@ -191,7 +193,9 @@ function Spreadsheet(options) {
         // iterate through each row and add a td as necessary
         for(i = 0; i < this.getRowCount(); i++) {
             newTd = document.createElement('td');
-            newTd.innerHTML = Math.floor(Math.random()*10);
+            if(options.autofill && options.autofill === true) {
+                newTd.innerHTML = Math.floor(Math.random() * 10);
+            }
             
             // event handlers
             newTd.ondblclick = tdDblClick;
