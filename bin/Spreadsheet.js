@@ -21,7 +21,7 @@ function Spreadsheet(ctx, row, col) {
     var _rowCount = row,
         _colCount = col,
         _rowCounter = 0,
-        _alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+        _alphabet = ' ABCDEFGHIJKLMNOPQRSTUVWXYZ',
         _this = this, // set to this object; allows functions to bypass functional scope and access the Spreadsheet
         oldCellValue; // used to track value for event handler onCellValueChanged
     
@@ -299,17 +299,18 @@ function Spreadsheet(ctx, row, col) {
         if(n > 702) {
             return; // cannot go past ZZ, which is (26)^2 + 26
         }
-        
-        var x = [0, n];
-
-        if(x[1] > 26) {
+        else if(n <= 26) {
+            return _alphabet[n];
+        }
+        else {
+            var x = [0, n];
             while(x[1] > 26) {
                 x[1] -= 26;
                 x[0] += 1;
             }
+          
+           return (_alphabet[x[0]] + _alphabet[x[1]]).trim();
         }
-
-        return (_alphabet[x[0]] + _alphabet[x[1]]).trim();
     }
     
     function letterBaseToNum(s) {
@@ -356,7 +357,7 @@ function Spreadsheet(ctx, row, col) {
         tr.appendChild(grayCell);
         for(i = 0; i < col; i++) {
             th = document.createElement('th');
-            th.innerHTML = _alphabet[i];
+            th.innerHTML = numToLetterBase(i+1);
             tr.appendChild(th);
         }
         thead.appendChild(tr);
