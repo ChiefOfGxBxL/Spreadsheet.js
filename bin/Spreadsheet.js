@@ -65,34 +65,49 @@ function Spreadsheet(ctx, row, col) {
             deselectAllText();
         }
         else if(e.key === 'Tab' || e.keyCode === 9) {
-            /* select the cell to the right of this one
-            else if end of line, go to the next line */
             e.preventDefault();
             e.target.blur();
             _this.unfocusCells();
             
-            // move on to next cell
             var colOfTable = e.target.cellIndex,
                 rowOfTable = e.target.parentElement.rowIndex,
                 rowCount = _this.getRowCount(),
                 colCount = _this.getColCount(),
-                nextCell;
+                prevCell, nextCell;
             
-            /* if we tab from the top-left most content cell,
-            we are at [1, 1], so now move to [1, 2] if possible */
-            if(rowOfTable === rowCount && colOfTable === colCount) {
-                // We are on the last cell, and thus cannot tab to a next cell
-                return;
-            }
-            else {
-                if(colOfTable < colCount) {
-                    // can select cell in next column
-                    nextCell = _this.selectCell(rowOfTable - 1, colOfTable);
-                    _this.focusCell(nextCell);
+            if(e.shiftKey) {
+                // go backward one cell
+                if(rowOfTable === 1 && colOfTable === 1) {
+                    // in top-left of table, cannot move backward any more
+                    return;
                 }
                 else {
-                    // overflow on column, go to next row starting at the 1st column
-                    nextCell = _this.selectCell(rowOfTable, 0);
+                    if(colOfTable > 1) {
+                        prevCell = _this.selectCell(rowOfTable - 1, colOfTable - 2);
+                    }
+                    else {
+                        prevCell = _this.selectCell(rowOfTable - 2, colCount - 1);
+                    }
+                    
+                    _this.focusCell(prevCell);
+                }
+            }
+            else {
+                // go forward one cell
+                if(rowOfTable === rowCount && colOfTable === colCount) {
+                    // We are on the last cell, and thus cannot tab to a next cell
+                    return;
+                }
+                else {
+                    if(colOfTable < colCount) {
+                        // can select cell in next column
+                        nextCell = _this.selectCell(rowOfTable - 1, colOfTable);
+                    }
+                    else {
+                        // overflow on column, go to next row starting at the 1st column
+                        nextCell = _this.selectCell(rowOfTable, 0);
+                    }
+                    
                     _this.focusCell(nextCell);
                 }
             }
