@@ -27,7 +27,7 @@ function Spreadsheet(options) {
     // Private variables
     var _rowCount = options.rows,
         _colCount = options.cols,
-        _rowCounter = 0,
+        _rowCounter = 0, // for labeling the rows with their row number
         _alphabet = ' ABCDEFGHIJKLMNOPQRSTUVWXYZ',
         self = this, // set to this object; allows functions to bypass functional scope and access the Spreadsheet
         oldCellValue; // used to track value for event handler onCellValueChanged
