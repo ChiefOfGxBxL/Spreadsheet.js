@@ -241,7 +241,7 @@ function Spreadsheet(options) {
     this.focusCell = function(cellElement) {
         self.unfocusCells();
         
-        cellElement.className += ' cellFocus';
+        cellElement.classList.add('cellFocus');
         cellElement.contentEditable = true;
         cellElement.focus();
         
@@ -260,7 +260,7 @@ function Spreadsheet(options) {
         }
         
         for(i = 0; i < cellFocusNodes.length; i++) {
-            cellFocusNodes[i].className = cellFocusNodes[i].className.replace(/cellFocus/, '').trim();
+            cellFocusNodes[i].classList.remove('cellFocus');
         }
     };
     
