@@ -1,6 +1,7 @@
 # Spreadsheet.js
 _A small javascript library for creating spreadsheet style tables_
 
+[![](https://img.shields.io/badge/Demo-Live%20Demo-brightgreen.svg?style=flat-square)](https://chiefofgxbxl.github.io/Spreadsheet.js/) [![](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](http://opensource.org/licenses/MIT)
 
 ## Features
  * Create tables, large and small
@@ -54,8 +55,14 @@ options: {
 
 #### Select a cell
 ```javascript
+// Selecting a cell returns the <td> HTMLElement
+// Note: row and col are 0-index based, so (0,0) corresponds to "A1"
 myTable.selectCell(0,0); // select the cell in the top-left most corner
-myTable._("G7"); // select the cell in column G, row 7
+
+// Getting cell content can be done by using the below function
+// Recommendation: Use the cell name when calling cellContent. While the 0-index based coordinates may be given, it can be more confusing and may lead to off-by-one errors
+myTable.cellContent("G7"); // select the cell in column G, row 7
+myTable.cellContent(6, 6); // select the cell in (6, 6), AKA "G7"
 ```
 Note that when selecting cells, you may only select "content cells". That is, it is not possible to select the header cells marked by letters or the row numberings. These are included with .getRows and .getCols, however:
 

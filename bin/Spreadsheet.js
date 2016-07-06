@@ -217,23 +217,26 @@ function Spreadsheet(options) {
     };
     
     this.cellContent = function(row, col) {
-        return this.table.children[row+1].children[col+1].textContent;
-    };
-    
-    this._ = function(cellname) {
-        var cell = parseCellname(cellname),
-            letterPart,
-            digitPart;
-        
-        if(cell[1].length > 2) {
-            return; // Spreadsheet.js only supports cellnames up to ZZ (which is 702 columns!)
+        if(arguments.length === 2 && typeof arguments[0] === 'number' && typeof arguments[1] === 'number') {
+            // Row and col provided
+            return this.table.tBodies[0].children[row].children[col+1].textContent;
         }
-        
-        // ex. [A, 4] or [ZZ, 210]
-        letterPart = letterBaseToNum(cell[0]);
-        digitPart = cell[1];
-        
-        return this.cellContent(digitPart-1, letterPart-1);
+        else if(arguments.length === 1 && typeof arguments[0] === 'string') {
+            // Cellname provided, e.g. "G15"
+            var cell = parseCellname(arguments[0]), // e.g. [A, 4] or [ZZ, 157]
+                letterPart = letterBaseToNum(cell[0]),
+                digitPart = cell[1];
+            
+            if(cell[0].length > 2) { // check the length of the column
+                return; // Spreadsheet.js only supports cellnames up to ZZ (which is 702 columns!)
+            }
+            
+            return this.cellContent(digitPart-1, letterPart-1);
+        }
+        else {
+            // Unsupported arguments supplied to this function call
+            console.warn('Invalid arguments supplied to cellContent: Expected (<int> row, <int> col) OR (<string> cellname)');
+        }
     };
     
     // this.tabulateData = function() {} // output data in a useful form, ex. CSV
