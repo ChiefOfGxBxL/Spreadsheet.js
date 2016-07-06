@@ -1,6 +1,7 @@
 # Spreadsheet.js
 _A small javascript library for creating spreadsheet style tables_
 
+[![](https://img.shields.io/badge/Demo-Live%20Demo-brightgreen.svg?style=flat-square)](https://chiefofgxbxl.github.io/Spreadsheet.js/) [![](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](http://opensource.org/licenses/MIT)
 
 ## Features
  * Create tables, large and small
