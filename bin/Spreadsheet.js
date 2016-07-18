@@ -292,12 +292,13 @@ function Spreadsheet(options) {
             row,
             colInRow;
         
+        // Create an empty array for each column
         for(i = 0; i < tHeadChildren.length; i++) {
             columns.push([]);
         }
         
         for(row = 0; row < tBodyRows.length; row++) {
-            // for each row, iterate through elements and add to the appropriate column
+            // For each row, iterate through elements and add to the appropriate column
             for(colInRow = 0; colInRow < tBodyRows[row].children.length; colInRow++) {
                 columns[colInRow].push(tBodyRows[row].children[colInRow]);
             }

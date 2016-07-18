@@ -68,8 +68,8 @@ Note that when selecting cells, you may only select "content cells". That is, it
 
 #### Select all rows / columns
 ```javascript
-myTable.getRows();
-myTable.getCols();
+myTable.getRows(); // Returns an array of HTMLElement <tr>'s
+myTable.getCols(); // Returns an array of columns, where each column is an array containing HTMLElement <td>'s
 ```
 
 #### Size of table
