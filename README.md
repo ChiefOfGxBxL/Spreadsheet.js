@@ -82,7 +82,7 @@ myTable.getSize(); // returns a duple: [row,col]
 
 #### Edit a cell
 Simply __click__ the cell and type something in.
-Skip to the next cell using your 'Tab' key, or 'Shift-Tab' to go back a cell:
+Skip to the next cell using your `Tab` key, or `Shift-Tab` to go back a cell:
 
 ![](https://github.com/ChiefOfGxBxL/Spreadsheet.js/blob/master/screenshots/Spreadsheet_Tab.png)
 
