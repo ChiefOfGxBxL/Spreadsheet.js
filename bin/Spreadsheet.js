@@ -271,7 +271,6 @@ function Spreadsheet(options) {
     // Accessors and Mutators
     this.getRows = function() {
         var arrayOfRows = [],
-            tHeadElements = [],
             tBodyRow;
         
         // Add <thead> elements to the collection
@@ -286,19 +285,25 @@ function Spreadsheet(options) {
     };
     
     this.getCols = function() {
-        var holder = [],
-            colHolder = [],
-            j, i;
+        var columns = [],
+            tHeadChildren = self.table.tHead.children[0].children,
+            tBodyRows = self.table.tBodies[0].children,
+            i,
+            row,
+            colInRow;
         
-        for(j = 0; j < _colCount+1; j++) {
-            colHolder = [];
-            for(i = 0; i < this.table.children.length; i++) {
-                colHolder.push(this.table.children[i].children[j].textContent);
-            }
-            holder.push(colHolder);
+        for(i = 0; i < tHeadChildren.length; i++) {
+            columns.push([]);
         }
         
-        return holder;
+        for(row = 0; row < tBodyRows.length; row++) {
+            // for each row, iterate through elements and add to the appropriate column
+            for(colInRow = 0; colInRow < tBodyRows[row].children.length; colInRow++) {
+                columns[colInRow].push(tBodyRows[row].children[colInRow]);
+            }
+        }
+        
+        return columns;
     };
     
     this.getRowCount = function() { return _rowCount - options.rows; };
