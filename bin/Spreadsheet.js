@@ -270,42 +270,41 @@ function Spreadsheet(options) {
     
     // Accessors and Mutators
     this.getRows = function() {
-        var holder = [],
-            rowChildren = [],
-            rowHolder = [],
-            el,
-            i;
+        var arrayOfRows = [],
+            tBodyRow;
         
-        for(i in this.table.children) {
-            rowChildren = (this.table.children[i].children);
-            
-            rowHolder = [];
-            for(el in rowChildren) {
-                if(rowChildren[el].textContent !== undefined) {
-                    rowHolder.push(rowChildren[el].textContent);
-                }
-            }
-            
-            if(rowHolder.length) { holder.push(rowHolder); }
+        // Add <thead> elements to the collection
+        arrayOfRows.push(self.table.tHead.children[0]);
+        
+        // Finally add all <tbody> rows
+        for(tBodyRow in self.table.tBodies[0].children) {
+            arrayOfRows.push(self.table.tBodies[0].children[tBodyRow]);
         }
         
-        return holder;
+        return arrayOfRows;
     };
     
     this.getCols = function() {
-        var holder = [],
-            colHolder = [],
-            j, i;
+        var columns = [],
+            tHeadChildren = self.table.tHead.children[0].children,
+            tBodyRows = self.table.tBodies[0].children,
+            i,
+            row,
+            colInRow;
         
-        for(j = 0; j < _colCount+1; j++) {
-            colHolder = [];
-            for(i = 0; i < this.table.children.length; i++) {
-                colHolder.push(this.table.children[i].children[j].textContent);
-            }
-            holder.push(colHolder);
+        // Create an empty array for each column
+        for(i = 0; i < tHeadChildren.length; i++) {
+            columns.push([]);
         }
-        return holder;
         
+        for(row = 0; row < tBodyRows.length; row++) {
+            // For each row, iterate through elements and add to the appropriate column
+            for(colInRow = 0; colInRow < tBodyRows[row].children.length; colInRow++) {
+                columns[colInRow].push(tBodyRows[row].children[colInRow]);
+            }
+        }
+        
+        return columns;
     };
     
     this.getRowCount = function() { return _rowCount - options.rows; };

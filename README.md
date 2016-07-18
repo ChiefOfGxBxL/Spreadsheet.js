@@ -68,8 +68,8 @@ Note that when selecting cells, you may only select "content cells". That is, it
 
 #### Select all rows / columns
 ```javascript
-myTable.getRows();
-myTable.getCols();
+myTable.getRows(); // Returns an array of HTMLElement <tr>'s
+myTable.getCols(); // Returns an array of columns, where each column is an array containing HTMLElement <td>'s
 ```
 
 #### Size of table
@@ -82,7 +82,7 @@ myTable.getSize(); // returns a duple: [row,col]
 
 #### Edit a cell
 Simply __click__ the cell and type something in.
-Skip to the next cell using your 'Tab' key, or 'Shift-Tab' to go back a cell:
+Skip to the next cell using your `Tab` key, or `Shift-Tab` to go back a cell:
 
 ![](https://github.com/ChiefOfGxBxL/Spreadsheet.js/blob/master/screenshots/Spreadsheet_Tab.png)
 
