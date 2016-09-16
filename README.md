@@ -34,11 +34,13 @@ By default, cells will not be filled in with any data. If you'd like it to add s
 ![](https://github.com/ChiefOfGxBxL/Spreadsheet.js/blob/master/screenshots/Spreadsheet_Basic.PNG)
 
 #### Options
-Below are all of the options that can be specified when creating a spreadsheet, including event-handlers and table information. **Options preceded by an asterisk (*) are required**!
+Below are all of the options that can be specified when creating a spreadsheet, including spreadsheet size, data, and event-handlers. **Options preceded by an asterisk (*) are required**! 
+
 ```javascript
 options: {
     *rows: <Integer>,
     *cols: <Integer>,
+    data: <Array<Array>> // overrides rows and cols if present
     *context: <HTMLElement>,
     
     autofill: <Boolean>,
@@ -52,6 +54,18 @@ options: {
     onNewCol: <function()>
 }
 ```
+
+#### Populate spreadsheet with data
+A spreadsheet can be automatically populated with values by using the *data* option. This is done by providing an array of arrays. The children arrays each present a row in the table, with the elements corresponding to columns.
+
+E.g. ```javascript
+[
+	[1,2,3],
+	[4,5,6],
+	[7,8,9]
+]
+```
+creates a spreadsheet with three rows and three columns. Row one will contain the values 1,2,3, row two: 4,5,6, and row three: 7,8,9. The spreadsheet will be sized accordingly, and will always be large enough to hold the data, leaving other cells blank if needed.
 
 #### Select a cell
 ```javascript

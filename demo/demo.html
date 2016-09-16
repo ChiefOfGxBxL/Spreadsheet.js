@@ -19,7 +19,19 @@
                 autofill: true
             });
 			
-			myTable2 = new Spreadsheet({rows: 2, cols: 3, context: container2});
+			myTable2 = new Spreadsheet({
+                context: container2, 
+                data: [
+                    [1,2],
+                    [4,5,6],
+                    [7,8,9],
+                    [1,2,3,4,5,6,7],
+                    [1,2,3,5,5],
+                    []
+                ],
+                autofill: true
+            });
+            
 			myTable3 = new Spreadsheet({rows: 0, cols: 0, context: container3});
 		}
 	</script>
