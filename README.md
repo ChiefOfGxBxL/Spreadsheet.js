@@ -58,7 +58,8 @@ options: {
 #### Populate spreadsheet with data
 A spreadsheet can be automatically populated with values by using the *data* option. This is done by providing an array of arrays. The children arrays each present a row in the table, with the elements corresponding to columns.
 
-E.g. ```javascript
+E.g. 
+```javascript
 [
 	[1,2,3],
 	[4,5,6],
