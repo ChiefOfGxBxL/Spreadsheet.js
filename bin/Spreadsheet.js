@@ -25,13 +25,20 @@ function Spreadsheet(options) {
     
     
     // Private variables
-    var _rowCount = options.rows,
-        _colCount = options.cols,
+    var _rowCount = (options.data) ? options.data.length : options.rows,
+        _colCount = (options.data) ? (function() {
+            var longestRow = 0;
+            options.data.forEach(function(row) {
+                if(row.length > longestRow) {
+                    longestRow = row.length;
+                }
+            });
+            return longestRow;
+        })() : options.cols,
         _rowCounter = 0, // for labeling the rows with their row number
         _alphabet = ' ABCDEFGHIJKLMNOPQRSTUVWXYZ',
         self = this, // set to this object; allows functions to bypass functional scope and access the Spreadsheet
         oldCellValue; // used to track value for event handler onCellValueChanged
-    
     
     // Private functions
     function tdDblClick(e) {
@@ -173,7 +180,6 @@ function Spreadsheet(options) {
         }
         
         this.table.tBodies[0].appendChild(tr);
-        _rowCount += 1;
         
         this.onNewRow();
     };
@@ -371,12 +377,14 @@ function Spreadsheet(options) {
             grayCell = document.createElement('th'),
             th,
             i,
-            r;
+            r,
+            dataRow,
+            dataCol;
             
         grayCell.innerHTML = ' ';
         
         tr.appendChild(grayCell);
-        for(i = 0; i < options.cols; i++) {
+        for(i = 0; i < _colCount; i++) {
             th = document.createElement('th');
             th.innerHTML = numToLetterBase(i+1);
             tr.appendChild(th);
@@ -387,8 +395,18 @@ function Spreadsheet(options) {
         table.appendChild(tbody);
         
         // add rest of rows; self.addRow will add each new row to the <tbody>
-        for(r = 0; r < options.rows; r++) {
+        for(r = 0; r < _rowCount; r++) {
             self.addRow();
+        }
+        
+        // If data is provided, populate the spreadsheet with its values
+        if(options.data) {
+            for(dataRow = 0; dataRow < options.data.length; dataRow++) {
+                // populate each row in the table
+                for(dataCol = 0; dataCol < _colCount; dataCol++) {
+                    tbody.children[dataRow].children[dataCol+1].innerHTML = (options.data[dataRow] && options.data[dataRow][dataCol]) ? options.data[dataRow][dataCol] : '';
+                }
+            }
         }
         
         c.appendChild(table);
