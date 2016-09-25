@@ -8,32 +8,76 @@
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/github-light.css">
     <meta name="viewport" content="width=device-width">
+    <script src='https://raw.githubusercontent.com/ChiefOfGxBxL/Spreadsheet.js/master/bin/Spreadsheet.js'></script>
+    <script>
+		window.onload = function() {
+			var container = document.getElementById("container"),
+                container2 = document.getElementById("container2");
+            
+			myTable = new Spreadsheet({
+                rows: 12,
+                cols: 8,
+                context: container,
+                onCellValueChanged: function(cell, old, newv) {
+                    console.log(old + '->' + newv);
+                },
+                autofill: true
+            });
+			
+			myTable2 = new Spreadsheet({
+                context: container2, 
+                data: [
+                    [1,2],
+                    [4,5,6],
+                    [7,8,9],
+                    [1,2,3,4,5,6,7],
+                    [1,2,3,5,5],
+                    []
+                ],
+                autofill: true
+            });
+		}
+	</script>
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
   </head>
   <body>
     <div class="wrapper">
-      <header>
-        <h1>Spreadsheet.js</h1>
-        <p>A small javascript library for creating spreadsheet style tables</p>
+        <header>
+            <h1>Spreadsheet.js</h1>
+            <p>A small javascript library for creating spreadsheet style tables</p>
 
-        <p class="view"><a href="https://github.com/ChiefOfGxBxL/Spreadsheet.js">View the Project on GitHub <small>ChiefOfGxBxL/Spreadsheet.js</small></a></p>
+            <a href="https://github.com/ChiefOfGxBxL/Spreadsheet.js" title="View project on GitHub">
+            <svg aria-hidden="true" style='fill:#f9f9f9;' class="octicon octicon-mark-github" height="28" version="1.1" viewBox="0 0 16 16" width="28"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
+            </a>
 
-
-        <ul>
-          <li><a href="https://github.com/ChiefOfGxBxL/Spreadsheet.js/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/ChiefOfGxBxL/Spreadsheet.js/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/ChiefOfGxBxL/Spreadsheet.js">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
+            <br/>
+            <a href="https://github.com/ChiefOfGxBxL/Spreadsheet.js/zipball/master">ZIP</a> &middot;
+            <a href="https://github.com/ChiefOfGxBxL/Spreadsheet.js/tarball/master">TAR</a>
+        </header>
+        <aside>
+            <ul>
+                <li><a href='#features'>Features</a></li>
+                <li><a href='#demo'>Demo</a></li>
+                <li>
+                    <a href='#usage'>Usage</a>
+                    <ul>
+                        <li><a href='#creating-a-table'>Creating a table</a></li>
+                        <li><a href='#options'>Options</a></li>
+                        <li><a href='#populate-spreadsheet-with-data'>Populate spreadsheet with data</a></li>
+                        <li><a href='#select-a-cell'>Select a cell</a></li>
+                        <li><a href='#select-all-rows--columns'>Select all rows / columns</a></li>
+                        <li><a href='#size-of-table'>Size of table</a></li>
+                        <li><a href='#edit-a-cell'>Edit a cell</a></li>
+                    </ul>
+                </li>
+                <li><a href='#contributing'>Contributing</a></li>
+                <li><a href='#license'>License</a></li>
+            </ul>
+        </aside>
       <section>
-        <h1>
-<a id="spreadsheetjs" class="anchor" href="#spreadsheetjs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Spreadsheet.js</h1>
-
-<p><em>A small javascript library for creating spreadsheet style tables</em></p>
-
-<p><a href="https://chiefofgxbxl.github.io/Spreadsheet.js/"><img src="https://img.shields.io/badge/Demo-Live%20Demo-brightgreen.svg?style=flat-square" alt=""></a> <a href="http://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt=""></a></p>
+        <h1><a id="spreadsheetjs" class="anchor" href="#spreadsheetjs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Spreadsheet.js</h1>
 
 <h2>
 <a id="features" class="anchor" href="#features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Features</h2>
@@ -46,6 +90,41 @@
 <li>Tab through cells to quickly edit them in succession</li>
 <li>Attach event-handlers to table and cell events</li>
 </ul>
+
+<h2>
+<a id="demo" class="anchor" href="#demo" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Demo</h2>
+        <div name='table1' id='container'></div>
+        <pre>
+myTable = new Spreadsheet({
+    rows: 12,
+    cols: 8,
+    context: container,
+    onCellValueChanged: function(cell, old, newv) {
+        console.log(old + '->' + newv);
+    },
+    autofill: true
+});
+        </pre>
+        
+        <hr/>
+        
+        <div name='table2' id='container2'></div>
+                <pre>
+myTable2 = new Spreadsheet({
+    context: container2, 
+    data: [
+        [1,2],
+        [4,5,6],
+        [7,8,9],
+        [1,2,3,4,5,6,7],
+        [1,2,3,5,5],
+        []
+    ],
+    autofill: true
+});
+        </pre>
+        
+        <hr/>
 
 <h2>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
@@ -157,8 +236,8 @@ Skip to the next cell using your <code>Tab</code> key, or <code>Shift-Tab</code>
 <p>Spreadsheet.js is available under the <a href="http://opensource.org/licenses/MIT">MIT License</a>.</p>
       </section>
       <footer>
-        <p>This project is maintained by <a href="https://github.com/ChiefOfGxBxL">ChiefOfGxBxL</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+        <small>This project is maintained by <a href="https://github.com/ChiefOfGxBxL">ChiefOfGxBxL</a></small><br/>
+        <small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small>
       </footer>
     </div>
     <script src="javascripts/scale.fix.js"></script>

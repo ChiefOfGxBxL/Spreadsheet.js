@@ -1,0 +1,36 @@
+html {
+    background-color:#f9f9f9;
+}
+body {
+    width: 80%;
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius:4px;
+    font-family: Segoe UI
+}
+
+a {color: #0074D9;text-decoration:none;}
+
+h2,h3,h4 {
+    font-family: 'Open Sans', sans-serif;
+    border-bottom: 1px SOLID #eee;
+}
+
+header {
+    background-color: #30B065;
+    padding:10px;
+    border-radius:4px 4px 0 0;
+    text-align: center;
+    color: #fff;
+}
+header > a {color: #fff;}
+
+section {
+    padding:10px;
+}
+
+footer {
+    padding:10px;
+    border-top:1px dotted #DDD;
+    text-align:center;
+}
