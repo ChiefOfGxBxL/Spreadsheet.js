@@ -7,9 +7,6 @@
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/github-light.css">
-    <script src='javascripts/Spreadsheet.js'></script>
-    <script src='javascripts/index.js'></script>
-    
     <meta name="viewport" content="width=device-width">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -20,8 +17,9 @@
       <header>
         <h1>Spreadsheet.js</h1>
         <p>A small javascript library for creating spreadsheet style tables</p>
-        
+
         <p class="view"><a href="https://github.com/ChiefOfGxBxL/Spreadsheet.js">View the Project on GitHub <small>ChiefOfGxBxL/Spreadsheet.js</small></a></p>
+
 
         <ul>
           <li><a href="https://github.com/ChiefOfGxBxL/Spreadsheet.js/zipball/master">Download <strong>ZIP File</strong></a></li>
@@ -29,27 +27,141 @@
           <li><a href="https://github.com/ChiefOfGxBxL/Spreadsheet.js">View On <strong>GitHub</strong></a></li>
         </ul>
       </header>
-      
       <section>
-        <h1><a id="spreadsheetjs" class="anchor" href="#spreadsheetjs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Spreadsheet.js Live Demo</h1>
-        
-        <p><em>A small javascript library for creating spreadsheet style tables</em></p>
-         
-        <fieldset>
-            <label>Rows: <input type='number' id='rows' value='6' min='1' max='100' style='width:90px;'/></label>
-            <label>Columns: <input type='number' id='cols' value='8' min='1' max='10' style='width:90px;'/></label>
-            <button id='generate'>Generate Spreadsheet</button>
-        </fieldset>
+        <h1>
+<a id="spreadsheetjs" class="anchor" href="#spreadsheetjs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Spreadsheet.js</h1>
 
-        <div id='container'></div>
+<p><em>A small javascript library for creating spreadsheet style tables</em></p>
 
+<p><a href="https://chiefofgxbxl.github.io/Spreadsheet.js/"><img src="https://img.shields.io/badge/Demo-Live%20Demo-brightgreen.svg?style=flat-square" alt=""></a> <a href="http://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt=""></a></p>
+
+<h2>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Features</h2>
+
+<ul>
+<li>Create tables, large and small</li>
+<li>Columns labeled by letters (A,B,...,AA,...ZZ); rows labeled with line numbers</li>
+<li>Add new columns and rows</li>
+<li>Easily select cells by spreadsheet-style names (A5, G15, etc.)</li>
+<li>Tab through cells to quickly edit them in succession</li>
+<li>Attach event-handlers to table and cell events</li>
+</ul>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
+
+<h4>
+<a id="creating-a-table" class="anchor" href="#creating-a-table" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Creating a table</h4>
+
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">link</span> <span class="pl-e">rel</span>=<span class="pl-s"><span class="pl-pds">'</span>stylesheet<span class="pl-pds">'</span></span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">'</span>text/css<span class="pl-pds">'</span></span> <span class="pl-e">href</span>=<span class="pl-s"><span class="pl-pds">'</span>Spreadsheet.css<span class="pl-pds">'</span></span>/&gt;
+&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">'</span>Spreadsheet.js<span class="pl-pds">'</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> container <span class="pl-k">=</span> <span class="pl-c1">document</span>.<span class="pl-c1">getElementById</span>(<span class="pl-s"><span class="pl-pds">"</span>container<span class="pl-pds">"</span></span>); <span class="pl-c">// have a div handy to hold the table</span>
+myTable <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Spreadsheet</span>({
+    rows<span class="pl-k">:</span> <span class="pl-c1">5</span>,
+    cols<span class="pl-k">:</span> <span class="pl-c1">10</span>,
+    context<span class="pl-k">:</span> container,
+    <span class="pl-en">onCellValueChanged</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">cell</span>, <span class="pl-smi">old</span>, <span class="pl-smi">newv</span>) {
+        <span class="pl-en">console</span>.<span class="pl-c1">log</span>(old <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">'</span>-&gt;<span class="pl-pds">'</span></span> <span class="pl-k">+</span> newv);
+    }
+});</pre></div>
+
+<p>By default, cells will not be filled in with any data. If you'd like it to add some random numbers 0-9, set <code>autofill</code> to true.</p>
+
+<p><img src="https://github.com/ChiefOfGxBxL/Spreadsheet.js/blob/master/screenshots/Spreadsheet_Basic.PNG" alt=""></p>
+
+<h4>
+<a id="options" class="anchor" href="#options" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Options</h4>
+
+<p>Below are all of the options that can be specified when creating a spreadsheet, including spreadsheet size, data, and event-handlers. <strong>Options preceded by an asterisk (*) are required</strong>! </p>
+
+<div class="highlight highlight-source-js"><pre>options<span class="pl-k">:</span> {
+    <span class="pl-k">*</span>rows<span class="pl-k">:</span> <span class="pl-k">&lt;</span>Integer<span class="pl-k">&gt;</span>,
+    <span class="pl-k">*</span>cols<span class="pl-k">:</span> <span class="pl-k">&lt;</span>Integer<span class="pl-k">&gt;</span>,
+    data<span class="pl-k">:</span> <span class="pl-k">&lt;</span><span class="pl-c1">Array</span><span class="pl-k">&lt;</span><span class="pl-c1">Array</span><span class="pl-k">&gt;&gt;</span> <span class="pl-c">// overrides rows and cols if present</span>
+    <span class="pl-k">*</span>context<span class="pl-k">:</span> <span class="pl-k">&lt;</span><span class="pl-c1">HTMLElement</span><span class="pl-k">&gt;</span>,
+
+    autofill<span class="pl-k">:</span> <span class="pl-k">&lt;</span><span class="pl-c1">Boolean</span><span class="pl-k">&gt;</span>,
+
+    <span class="pl-c">// Event-handlers</span>
+    onCellValueChanged<span class="pl-k">:</span> <span class="pl-k">&lt;</span><span class="pl-k">function</span>(<span class="pl-k">&lt;</span><span class="pl-c1">HTMLElement</span><span class="pl-k">&gt;</span> <span class="pl-smi">cell</span>, <span class="pl-k">&lt;</span><span class="pl-c1">String</span><span class="pl-k">&gt;</span> <span class="pl-smi">oldValue</span>, <span class="pl-k">&lt;</span><span class="pl-c1">String</span><span class="pl-k">&gt;</span> <span class="pl-smi">newValue</span>)&gt;,
+    onCellClick: &lt;function(&lt;HTMLElement&gt; cell)&gt;,
+    onCellDblClick: &lt;function(&lt;HTMLElement&gt; cell)&gt;,
+    onCellFocused: &lt;function(&lt;HTMLElement&gt; cell)&gt;,
+    onNewRow: &lt;function()&gt;,
+    onNewCol: &lt;function()&gt;
+}</pre></div>
+
+<h4>
+<a id="populate-spreadsheet-with-data" class="anchor" href="#populate-spreadsheet-with-data" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Populate spreadsheet with data</h4>
+
+<p>A spreadsheet can be automatically populated with values by using the <em>data</em> option. This is done by providing an array of arrays. The children arrays each present a row in the table, with the elements corresponding to columns.</p>
+
+<p>E.g. </p>
+
+<div class="highlight highlight-source-js"><pre>[
+    [<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>],
+    [<span class="pl-c1">4</span>,<span class="pl-c1">5</span>,<span class="pl-c1">6</span>],
+    [<span class="pl-c1">7</span>,<span class="pl-c1">8</span>,<span class="pl-c1">9</span>]
+]</pre></div>
+
+<p>creates a spreadsheet with three rows and three columns. Row one will contain the values 1,2,3, row two: 4,5,6, and row three: 7,8,9. The spreadsheet will be sized accordingly, and will always be large enough to hold the data, leaving other cells blank if needed.</p>
+
+<h4>
+<a id="select-a-cell" class="anchor" href="#select-a-cell" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Select a cell</h4>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// Selecting a cell returns the &lt;td&gt; HTMLElement</span>
+<span class="pl-c">// Note: row and col are 0-index based, so (0,0) corresponds to "A1"</span>
+<span class="pl-smi">myTable</span>.<span class="pl-en">selectCell</span>(<span class="pl-c1">0</span>,<span class="pl-c1">0</span>); <span class="pl-c">// select the cell in the top-left most corner</span>
+
+<span class="pl-c">// Getting cell content can be done by using the below function</span>
+<span class="pl-c">// Recommendation: Use the cell name when calling cellContent. While the 0-index based coordinates may be given, it can be more confusing and may lead to off-by-one errors</span>
+<span class="pl-smi">myTable</span>.<span class="pl-en">cellContent</span>(<span class="pl-s"><span class="pl-pds">"</span>G7<span class="pl-pds">"</span></span>); <span class="pl-c">// select the cell in column G, row 7</span>
+<span class="pl-smi">myTable</span>.<span class="pl-en">cellContent</span>(<span class="pl-c1">6</span>, <span class="pl-c1">6</span>); <span class="pl-c">// select the cell in (6, 6), AKA "G7"</span></pre></div>
+
+<p>Note that when selecting cells, you may only select "content cells". That is, it is not possible to select the header cells marked by letters or the row numberings. These are included with .getRows and .getCols, however:</p>
+
+<h4>
+<a id="select-all-rows--columns" class="anchor" href="#select-all-rows--columns" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Select all rows / columns</h4>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">myTable</span>.<span class="pl-en">getRows</span>(); <span class="pl-c">// Returns an array of HTMLElement &lt;tr&gt;'s</span>
+<span class="pl-smi">myTable</span>.<span class="pl-en">getCols</span>(); <span class="pl-c">// Returns an array of columns, where each column is an array containing HTMLElement &lt;td&gt;'s</span></pre></div>
+
+<h4>
+<a id="size-of-table" class="anchor" href="#size-of-table" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Size of table</h4>
+
+<p>These should be self-explanatory</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">myTable</span>.<span class="pl-en">getRowCount</span>();
+<span class="pl-smi">myTable</span>.<span class="pl-en">getColCount</span>();
+<span class="pl-smi">myTable</span>.<span class="pl-en">getSize</span>(); <span class="pl-c">// returns a duple: [row,col]</span></pre></div>
+
+<h4>
+<a id="edit-a-cell" class="anchor" href="#edit-a-cell" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Edit a cell</h4>
+
+<p>Simply <strong>click</strong> the cell and type something in.
+Skip to the next cell using your <code>Tab</code> key, or <code>Shift-Tab</code> to go back a cell:</p>
+
+<p><img src="https://github.com/ChiefOfGxBxL/Spreadsheet.js/blob/master/screenshots/Spreadsheet_Tab.png" alt=""></p>
+
+<h2>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contributing</h2>
+
+<p>Help would be greatly appreciated. Feel free to grab a task from the issue tracker, or suggest your own improvement!</p>
+
+<p>Create a fork of this repository, claim some issues and work on them, and then submit a merge request!</p>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
+
+<p>Spreadsheet.js is available under the <a href="http://opensource.org/licenses/MIT">MIT License</a>.</p>
       </section>
-      
       <footer>
-        <p>This project is maintained by <a href="https://github.com/ChiefOfGxBxL">ChiefOfGxBxL</a> under the <a href="http://opensource.org/licenses/MIT">MIT License</a></p>
+        <p>This project is maintained by <a href="https://github.com/ChiefOfGxBxL">ChiefOfGxBxL</a></p>
         <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
     </div>
     <script src="javascripts/scale.fix.js"></script>
+    
   </body>
 </html>
